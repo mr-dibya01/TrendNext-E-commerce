@@ -33,7 +33,7 @@ const handleScroll_right=()=>{
   return (
     <div className='w-full h-[50%]  flex  overflow-hidden relative '>
         <button className=' absolute w-[2.2vw] h-[10vh] z-10  flex justify-center items-center left-2 top-[40%] -translate-y-[50%] rounded-md hover:bg-zinc-200 transition' onClick={handleScroll_left}><FaChevronLeft className='size-10'/></button>
-        <button className=' absolute w-[2.2vw] h-[10vh] z-10  flex justify-center items-center top-[40%] right-2 -translate-y-[50%] rounded-md text-black hover:bg-zinc-200 transition' onClick={handleScroll_right}><FaChevronRight className='size-10'/></button>
+        <button className=' absolute w-[2.2vw] h-[10vh] z-10  flex justify-center items-center top-[41%] right-2 -translate-y-[50%] rounded-md text-black hover:bg-zinc-200 transition' onClick={handleScroll_right}><FaChevronRight className='size-10'/></button>
         {HeroBaners.map((pair,idx) =>{
             return <div key={idx} className='h-full w-[100%] flex items-center justify-center shrink-0 transition-transform tim ease-in-out duration-1000' style={{ transform: `translateX(-${currentSlide * 100}%)` }} >
               {pair.map((slide,index)=>

@@ -24,4 +24,17 @@ router.get("/:id",async (req,res)=>{
 
 });
 
+// category wise product Data
+router.get("/category/:categoryName",async(req,res)=>{
+    let { categoryName }=req.params;
+    try {
+        let products=await Product.find({category: categoryName});
+        console.log(products)
+        res.json({categoryWiseProducts: products});
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({msg: "Something went wrong"});
+    }
+});
+
 module.exports=router;

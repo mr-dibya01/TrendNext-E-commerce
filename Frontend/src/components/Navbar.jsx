@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import assets  from '../assets/productAssets/pictures.jsx'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 import { IoSearch } from "react-icons/io5";
 import { FaCartShopping } from "react-icons/fa6";
 import { MdFavoriteBorder } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdOutlineAddBusiness } from "react-icons/md";
-import Login from '../pages/Login.jsx';
 
 
 function Navbar() {
   const Navigate=useNavigate(); 
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  console.log("Cart ItemsssssNAV", cartItems);
+  const cartSize = cartItems.length;
 
   function handleCart(){
     Navigate("/trendnext/cart");
@@ -36,13 +39,15 @@ function Navbar() {
         <input type="text" className='w-full h-full rounded-full bg-gradient-to-r from-blue-100 via-purple-100 to-violet-100 p-3 text-xl ' placeholder='Search for Products Brands and More'/>
       </div>
       <div className='icons h-full  w-[35%] flex items-center justify-between'>
-        <div className='flex gap-1 items-center cursor-pointer hover:opacity-70' onClick={ handleCart }>
+        <div className='flex gap-1 items-center cursor-pointer hover:opacity-70 relative ' onClick={ handleCart }>
           <FaCartShopping  className='text-2xl' />
           <h1 className='font-medium'>Cart</h1>
+          <div className='absolute h-5 w-10 p-1 bg-black text-white top-0 rounded-full left text-sm flex justify-center items-center left-[100%] translate-x-1 translate-y-[10%]'>{cartSize}{cartSize == 0 ? "" : " +"}</div>
         </div>
-        <div className='flex gap-1 items-center cursor-pointer hover:opacity-70' onClick={ handleFavorite }>
+        <div className='flex gap-1 items-center cursor-pointer hover:opacity-70 relative' onClick={ handleFavorite }>
           <MdFavoriteBorder className='text-2xl'/>
-          <h1 className='font-medium'>Fovorite</h1>
+          <h1 className='font-medium'>Fovorites</h1>
+          <div className='h-2.5 w-2.5 absolute bg-red-600 rounded-full top-0 left-[18%] -translate-y-0.5'></div>
         </div>
         <div className='flex gap-1 items-center cursor-pointer hover:opacity-70' onClick={ handleAdmin }>
           <MdOutlineAddBusiness className='text-2xl'/>

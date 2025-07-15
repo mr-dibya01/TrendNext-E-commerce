@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import OrderSuccess from './OrderSuccess';
 import assets from '../assets/productAssets/pictures';
 import AddressFrom from './AddressFrom';
 
@@ -43,7 +42,7 @@ function Checkout() {
 
   const handleBuyNow=() => {
     console.log("handleBuyNow");
-    // Navigate("/trendnext/OrderSuccess");
+    Navigate("/trendnext/OrderSuccess");
   }
 
   const handleChange=(e) => {
@@ -172,7 +171,7 @@ function Checkout() {
                     <h1 className='text-xl font-semibold'>${Math.round(Total)}</h1>
                   </div>
                   <div className='flex items-center justify-center my-4'>
-                    <button type='submit' className='bg-purple-600 w-full py-2 rounded-full text-lg text-white font-medium' >Pay ${Math.round(Total)}</button>
+                    <button type='submit' className='bg-purple-600 w-full py-2 rounded-full text-lg text-white font-medium' onClick={ handleBuyNow }>Pay ${Math.round(Total)}</button>
                   </div>
                   
                 </div>

@@ -27,8 +27,10 @@ export const cartSlice = createSlice({
             }
         },
         removeToCart: (state,action) => {
-            console.log(action.payload);
-            state.cartItems=state.cartItems.filter((item) => item.id === action.payload.id && item.size !== action.payload.size)
+            console.log("action.payload",action.payload);
+            console.log("state.cartItems +1",state.cartItems);
+            state.cartItems=state.cartItems.filter((item) => !(item.id === action.payload.id && item.size === action.payload.size));
+            console.log("state.cartItems +2",state.cartItems);
         },
         increaseItem: (state,action) => {
             const exitingItem=state.cartItems.find((item)=>
