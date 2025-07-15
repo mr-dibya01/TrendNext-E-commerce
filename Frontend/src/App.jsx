@@ -9,6 +9,8 @@ import Checkout  from "./pages/Checkout.jsx"
 import Login from './pages/Login.jsx';
 import Register from "./pages/Register.jsx"
 import OrderSuccess from './pages/OrderSuccess.jsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css'
 
@@ -30,6 +32,16 @@ function App() {
           <Route path='/trendnext/login' element={< Login/>}/>
           <Route path='/trendnext/register' element={< Register/>}/>
         </Routes>
+        <ToastContainer
+          position="top-center" // ya "bottom-right", "top-left" etc.
+          autoClose={2000}      // milliseconds
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnHover
+          draggable
+          theme="colored"
+        />
       </div>
     </Provider>
   )

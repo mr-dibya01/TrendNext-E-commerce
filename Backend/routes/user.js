@@ -65,6 +65,19 @@ router.post("/address",authMiddleware,async (req,res)=>{
     // let { name ,contact ,pincode ,strretName ,Address ,District ,State ,Landmark ,AddressType }=req.body();
 });
 
+// get user dettails
+router.get("/userInfo",authMiddleware,async(req,res)=>{
+    let currUserId= req.user.id;
+    console.log(currUserId);
+    try {
+        let currUser=await User.findById(currUserId);
+        res.json(currUser);
+    } catch (err) {
+        console.log(err);
+        res.status(402).json({error: "Something went wrong!"});
+    }
+});
+
 // get address of user
 router.get("/address",authMiddleware,async (req,res)=>{
     console.log("get address of use")

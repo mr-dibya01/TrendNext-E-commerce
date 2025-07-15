@@ -1,19 +1,45 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import assets  from '../assets/productAssets/pictures.jsx'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { IoSearch } from "react-icons/io5";
 import { FaCartShopping } from "react-icons/fa6";
-import { MdFavoriteBorder } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
-import { MdOutlineAddBusiness } from "react-icons/md";
+import { FaUser ,FaRegUserCircle ,FaRegUser } from "react-icons/fa";
+import { MdOutlineAddBusiness ,MdDashboard ,MdFavoriteBorder ,MdLogout } from "react-icons/md";
+import { RxCross1 } from "react-icons/rx";
+import axios from "axios"
+
+
+
 
 
 function Navbar() {
-  const Navigate=useNavigate(); 
+  let [navigateSidebar,setNavigateSidebar]=useState(false);
+  let [currUser,setCurrUser]=useState({});
   const cartItems = useSelector((state) => state.cart.cartItems);
-  console.log("Cart ItemsssssNAV", cartItems);
   const cartSize = cartItems.length;
+  const Navigate=useNavigate(); 
+  let token=localStorage.getItem("token");
+
+
+  useEffect(()=>{
+    async function fetchCurrUserInfo(){
+      try{
+        let res=await axios.get("http://localhost:5000/trendnext/user/userInfo",{
+          headers: {authorization:`Bearer ${token}`}
+        });
+        setCurrUser(res.data);
+      } catch (err){
+        console.error("Error fetching user info:", err);
+        if(err.response.data.error ==="Invalid token"){
+          localStorage.removeItem("token");
+          Navigate("/trendnext/login");
+        }
+      }
+    }
+    fetchCurrUserInfo();
+  },[]);
+
 
   function handleCart(){
     Navigate("/trendnext/cart");
@@ -24,10 +50,22 @@ function Navbar() {
   function handleAdmin(){
   
   }
-  function handleLogin(){
+  function handleSidebar(){
+    if(token){
+      setNavigateSidebar(!navigateSidebar);
+      console.log("1");
+    } else {
+      Navigate("/trendnext/login")
+    }
+
   }
   function handleLogo(){
     Navigate("/");
+  }
+  function handleLogout(){
+    localStorage.removeItem("token");
+    setNavigateSidebar(false);
+    Navigate("/trendnext/login");
   }
   return (
     <nav className='h-20 w-full bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 flex items-center px-4  py-1 justify-between'>
@@ -38,7 +76,7 @@ function Navbar() {
         <button className='absolute bg-purple-500 h-12 w-12 rounded-full border-[none] flex items-center justify-center right-0 -translate-x-[8%] translate-y-[6%] '><IoSearch className='text-3xl text-white hover:opacity-70'/></button>
         <input type="text" className='w-full h-full rounded-full bg-gradient-to-r from-blue-100 via-purple-100 to-violet-100 p-3 text-xl ' placeholder='Search for Products Brands and More'/>
       </div>
-      <div className='icons h-full  w-[35%] flex items-center justify-between'>
+      <div className='icons h-full  w-[35%] flex items-center justify-between relative'>
         <div className='flex gap-1 items-center cursor-pointer hover:opacity-70 relative ' onClick={ handleCart }>
           <FaCartShopping  className='text-2xl' />
           <h1 className='font-medium'>Cart</h1>
@@ -53,7 +91,33 @@ function Navbar() {
           <MdOutlineAddBusiness className='text-2xl'/>
           <h1 className='font-medium'>Sell Your Products</h1>
         </div>
-        <span className='h-10 w-10 bg-white rounded-full flex justify-center items-center cursor-pointer hover:opacity-90'><FaUser onClick={ () => Navigate("/trendnext/login") } className='text-2xl' /></span>
+        <span className='h-10 w-10 bg-white rounded-full flex justify-center items-center cursor-pointer hover:opacity-90'><FaUser onClick={ () => handleSidebar() } className='text-2xl' /></span>
+        {navigateSidebar && 
+          <div className='absolute h-fit w-96 z-20 -right-2 top-5 rounded-xl pt-2 shadow-2xl  bg-zinc-200 overflow-hidden'>
+            <div className='flex justify-end pr-2 pt-0.5 '>
+              <RxCross1 className='size-7  hover:bg-red-600 hover:text-white text-red-600 p-1 rounded-full transition hover:cursor-pointer' onClick={() => setNavigateSidebar(!navigateSidebar)}/>
+            </div>
+            <div className='flex flex-col items-center '>
+              <span className='h-28 w-28 bg-black text-white p-6  rounded-full'>
+                <FaRegUser className='h-full w-full'/>
+              </span>
+              <h1 className='text-2xl py-5'>{currUser.username}</h1>
+            </div>
+            
+            <div className='flex justify-start items-center py-4 px-3 gap-2 border-b-2 border-zinc-300 border-t-2 hover:bg-zinc-300 transition cursor-pointer'>
+              <FaRegUserCircle className='size-7'/>
+              <h1 className='text-2xl '>Account</h1>
+            </div>
+            <div className='flex justify-start items-center py-4 px-3 gap-2 border-b-2 border-zinc-300 hover:bg-zinc-300 transition cursor-pointer'>
+              <MdDashboard className='size-7'/>
+              <h1 className='text-2xl '>Dashbord</h1>
+            </div>
+            <div className='flex justify-start items-center py-4 px-3 gap-2 hover:bg-zinc-300 transition cursor-pointer' onClick={ () => handleLogout()}>
+              <MdLogout className='size-7'/>
+              <h1 className='text-2xl '>Log Out</h1>
+            </div>
+          </div> 
+        } 
       </div>
     </nav>
   )

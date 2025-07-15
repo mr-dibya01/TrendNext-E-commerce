@@ -46,7 +46,7 @@ function Category() {
   return (
     <div className="relative">
       <div className="w-full px-2 py-2 bg-white shadow-sm z-10 relative">
-        <div className="flex justify-around overflow-x-auto scrollbar-hide">
+        <div className="flex justify-around overflow-x-hidden scrollbar-hide">
           {categories.map((cat, index) => (
             <div
               key={index}
@@ -54,7 +54,7 @@ function Category() {
               className="flex items-center gap-2 px-3 py-1 shrink-0 cursor-pointer opacity-70 hover:opacity-100 transition whitespace-nowrap"
             >
               {cat.icon}
-              <h1 className="text-sm md:text-base">{cat.label}</h1>
+              <h1 className="text-sm md:text-base">{cat.label}</h1> 
             </div>
           ))}
         </div>

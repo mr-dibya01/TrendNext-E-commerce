@@ -3,6 +3,7 @@ import assets from "../assets/productAssets/pictures.jsx"
 import axios from "axios"
 import { Link ,useNavigate } from "react-router-dom"
 import Navbar from '../components/Navbar.jsx'
+import { toast } from 'react-toastify';
 
 function Login() {
   let [fromData,setFromData]=useState({username: "" , password: ""});
@@ -17,14 +18,25 @@ function Login() {
       let res=await axios.post("http://localhost:5000/trendnext/user/login",fromData);
       let token=res.data.token;
       localStorage.setItem("token",token);
+      // localStorage.clear();
       setFromData({username: "" , password: ""});
-      alert(res.data.message);  
+      // alert(res.data.message);  
       const nextRedirectUrl=localStorage.getItem("nextRedirectUrl");
       if(nextRedirectUrl){
         Navigate(nextRedirectUrl);
         localStorage.removeItem("nextRedirectUrl");
+        toast("Hello User!", {
+          position: "bottom-left",
+          autoClose: 3000,
+          theme: "dark",
+        });
       } else {
         Navigate("/");
+        toast("Hello User!", {
+          position: "bottom-right",
+          autoClose: 3000,
+          theme: "dark",
+        });
       }
       console.log(res);
     } catch (err) {
