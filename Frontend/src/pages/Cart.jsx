@@ -4,6 +4,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
 import { increaseItem ,decreaseItem ,removeToCart ,setBuyNowItem } from "../features/cart/cartSlice.js"
 import { useDispatch ,useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 
   
@@ -24,6 +25,11 @@ function Cart() {
     console.log(item);
     Dispatch(removeToCart(item));
     console.log("removeToCart",item);
+    toast.success("removed To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+      theme: "colored",
+    });
   }
   function handleCheckout(){
     localStorage.setItem("buyNowData",JSON.stringify(cartItems));

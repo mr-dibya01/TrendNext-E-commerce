@@ -14,13 +14,24 @@ const productSchema=new Schema({
         type: String,
         required: true
     },
-    image:[{
-        url: String,
-        filename: String
-    }],
+    image: {
+        type: [
+            {
+                url: String,
+                filename: String,
+            }
+        ],
+        default: [
+            {
+                url: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS4IF-Yf59Lz8pyYzDkK6fRbIvyIvxGhXqS1zq26VFsx30IKjxCiuVSDefLKXms-OFi5OeE1e04SixbOBDa_ype0PJu45mVZbngCEwz3XCiGrE33GHwgDpF",
+                filename: "default-image"
+            }
+        ]
+    },
     gender: {
         type: String,
         required: true,
+        enum: ["Male", "Female", "Unisex"],
     },
     category: {
         type: String,
@@ -36,11 +47,12 @@ const productSchema=new Schema({
     },
     sizes: {
         type: [String],
-        default: []
+        default: [],
+        enum: ["XS", "S", "M", "L", "XL", "XXL"]
     },
     rating: {
-        rate: Number,
-        count: Number,
+        rate: { type: Number, default: 0 },
+        count: { type: Number, default: 0 }
     }
 });
 

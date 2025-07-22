@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import assets from '../assets/productAssets/pictures';
 import AddressFrom from './AddressFrom';
+import { toast } from 'react-toastify';
 
 
 function Checkout() {
@@ -20,6 +21,11 @@ function Checkout() {
     if(!token){
       localStorage.setItem("nextRedirectUrl","/trendnext/checkout");
       Navigate("/login");
+      toast.error("You should be Loged in",{
+        autoClose: 3000 ,
+        position: "bottom-right" ,
+        theme: "colored"
+      })
       return;
     }
     if(reduxData){
@@ -32,6 +38,11 @@ function Checkout() {
         setBuyNowItem(JSON.parse(localData));
       } else {
         Navigate("/");
+        toast.error("Product has not Selected",{
+          position: "bottom-right" ,
+          autoClose: 3000 ,
+          theme: "colored"
+        });
       }
     }
   },[reduxData])
@@ -40,10 +51,14 @@ function Checkout() {
   return <h1 className='text-center mt-10 text-xl font-semibold'>No items in checkout</h1>;
   }
 
-  const handleBuyNow=() => {
-    console.log("handleBuyNow");
-    Navigate("/trendnext/OrderSuccess");
-  }
+  // const handleBuyNow=() => {
+  //   if(!fromData.cardCvc || !fromData.cardExpiry || !fromData.cardHolderName || !fromData.cardNumber || !fromData.email || !fromData.paymentMode){
+  //     return;
+  //   } else {
+  //     console.log("handleBuyNow");
+  //     Navigate("/trendnext/OrderSuccess");
+  //   }
+  // }
 
   const handleChange=(e) => {
     setFromData((prevData)=>({...prevData ,[e.target.name]: e.target.value}))
@@ -54,12 +69,21 @@ function Checkout() {
     e.preventDefault();
     if(fromData.paymentMode == "cash"){
       console.log("CASH");
+      Navigate("/trendnext/OrderSuccess");
     }
     else if(!fromData.cardCvc || !fromData.cardExpiry || !fromData.cardHolderName || !fromData.cardNumber || !fromData.email || !fromData.paymentMode){
-      alert("Please fill the all blank fields");
+      toast.error("Please fill the all blank fields",{
+        position: "bottom-right" ,
+        autoClose: 3000,
+        theme: "colored"
+      });
       return;
     } 
-    console.log(fromData);
+    else {
+      console.log("handleBuyNow");
+      console.log(fromData);
+      Navigate("/trendnext/OrderSuccess");
+    }
   }
   const subTotal = buyNowItem.reduce((acc,curr)=> acc + (curr.price * curr.quantity),0);
   const Discount=subTotal * 0.25;
@@ -171,7 +195,7 @@ function Checkout() {
                     <h1 className='text-xl font-semibold'>${Math.round(Total)}</h1>
                   </div>
                   <div className='flex items-center justify-center my-4'>
-                    <button type='submit' className='bg-purple-600 w-full py-2 rounded-full text-lg text-white font-medium' onClick={ handleBuyNow }>Pay ${Math.round(Total)}</button>
+                    <button type='submit' className='bg-purple-600 w-full py-2 rounded-full text-lg text-white font-medium'>Pay ${Math.round(Total)}</button>
                   </div>
                   
                 </div>

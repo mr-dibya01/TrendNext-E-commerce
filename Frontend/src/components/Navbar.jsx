@@ -8,19 +8,20 @@ import { FaUser ,FaRegUserCircle ,FaRegUser } from "react-icons/fa";
 import { MdOutlineAddBusiness ,MdDashboard ,MdFavoriteBorder ,MdLogout } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import axios from "axios"
+import { toast } from 'react-toastify';
 
 
 
 
 
-function Navbar() {
+function Navbar({handleSearch}) {
   let [navigateSidebar,setNavigateSidebar]=useState(false);
   let [currUser,setCurrUser]=useState({});
+  let [query,setQuery]=useState("");
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartSize = cartItems.length;
   const Navigate=useNavigate(); 
   let token=localStorage.getItem("token");
-
 
   useEffect(()=>{
     async function fetchCurrUserInfo(){
@@ -37,7 +38,10 @@ function Navbar() {
         }
       }
     }
-    fetchCurrUserInfo();
+    if(token){
+      fetchCurrUserInfo();
+    }
+    
   },[]);
 
 
@@ -48,7 +52,7 @@ function Navbar() {
   
   }
   function handleAdmin(){
-  
+    
   }
   function handleSidebar(){
     if(token){
@@ -62,6 +66,9 @@ function Navbar() {
   function handleLogo(){
     Navigate("/");
   }
+  // async function handleSearch(){
+    
+  // }
   function handleLogout(){
     localStorage.removeItem("token");
     setNavigateSidebar(false);
@@ -73,8 +80,12 @@ function Navbar() {
         <img className='h-full w-full object-cover' src={assets.logo6} alt="" />
       </div>
       <div className='w-[40%] h-[75%] relative'>
-        <button className='absolute bg-purple-500 h-12 w-12 rounded-full border-[none] flex items-center justify-center right-0 -translate-x-[8%] translate-y-[6%] '><IoSearch className='text-3xl text-white hover:opacity-70'/></button>
-        <input type="text" className='w-full h-full rounded-full bg-gradient-to-r from-blue-100 via-purple-100 to-violet-100 p-3 text-xl ' placeholder='Search for Products Brands and More'/>
+        <button className='absolute bg-purple-500 h-12 w-12 rounded-full border-[none] flex items-center justify-center right-0 -translate-x-[8%] translate-y-[6%]' onClick={() => handleSearch(query) }><IoSearch className='text-3xl text-white hover:opacity-70'/></button>
+        <input type="text" className='w-full h-full rounded-full bg-gradient-to-r from-blue-100 via-purple-100 to-violet-100 p-3 text-xl outline-none' placeholder='Search for Products Brands and More' onChange={(e)=>setQuery(e.target.value)} onKeyDown={(e) => {
+          if(e.key == "Enter"){
+            handleSearch(query);
+          }
+        }}/>
       </div>
       <div className='icons h-full  w-[35%] flex items-center justify-between relative'>
         <div className='flex gap-1 items-center cursor-pointer hover:opacity-70 relative ' onClick={ handleCart }>
@@ -96,7 +107,7 @@ function Navbar() {
           <div className='absolute h-fit w-96 z-20 -right-2 top-5 rounded-xl pt-2 shadow-2xl  bg-zinc-200 overflow-hidden'>
             <div className='flex justify-end pr-2 pt-0.5 '>
               <RxCross1 className='size-7  hover:bg-red-600 hover:text-white text-red-600 p-1 rounded-full transition hover:cursor-pointer' onClick={() => setNavigateSidebar(!navigateSidebar)}/>
-            </div>
+            </div> 
             <div className='flex flex-col items-center '>
               <span className='h-28 w-28 bg-black text-white p-6  rounded-full'>
                 <FaRegUser className='h-full w-full'/>

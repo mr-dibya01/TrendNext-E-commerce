@@ -256,6 +256,7 @@ let descProducts=[
   }
 ]
 const initData=async () => {
+  try{
   await product.deleteMany({});
   console.log("All data deleted");
   let newdata=data.map((product,idx)=>
@@ -272,7 +273,10 @@ const initData=async () => {
   )
   console.log(newdata);
   await product.insertMany(newdata);
-  console.log("Successsfull init your data")
+  console.log("Successsfull init your data"); 
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 initData();

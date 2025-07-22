@@ -23,7 +23,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/trendnext' element={<Home />} />
-          <Route path='/trendnext/:id' element={ <ProductDettails />} />
+          <Route path='/trendnext/products/:id' element={ <ProductDettails />} />
           <Route path='/trendnext/cart' element={ <Cart /> } />
           <Route path='/trendnext/checkout' element={ <Checkout />} />
           <Route path='/trendnext/login' element={<Login />} />
@@ -31,6 +31,7 @@ function App() {
           <Route path='/trendnext/OrderSuccess' element={< OrderSuccess/>}/>
           <Route path='/trendnext/login' element={< Login/>}/>
           <Route path='/trendnext/register' element={< Register/>}/>
+          <Route path="*" element={<Login />} />
         </Routes>
         <ToastContainer
           position="top-center" // ya "bottom-right", "top-left" etc.

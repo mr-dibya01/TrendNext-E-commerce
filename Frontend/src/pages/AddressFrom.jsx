@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function AddressFrom() {
   let [fromData,setFromData]=useState({ name:"" ,contact:"" ,pincode:"" ,streetName:"" ,address:"" ,district:"" ,state:"" ,landmark:"" ,addressType:"" });
@@ -10,9 +11,11 @@ function AddressFrom() {
   let token = localStorage.getItem("token");
   let headers={headers: {authorization: `Bearer ${token}`}}
   let Navigate=useNavigate();
-  console.log("editFrom",editFrom);
-  console.log("fromData",fromData);
-  console.log("savedAddress",savedAddress);
+
+  // console.log("editFrom",editFrom);
+  // console.log("fromData",fromData);
+  // console.log("savedAddress",savedAddress);
+
   useEffect(() => {
     async function fetchAddress(){
       try {
@@ -34,7 +37,11 @@ function AddressFrom() {
           localStorage.setItem("nextRedirectUrl","/trendnext/checkout");
           Navigate("/trendnext/login");
         }
-        alert(msg);
+        toast.error(`${msg} Please again Relogin`,{
+          position: "bottom-right" ,
+          autoClose: 3000 ,
+          theme: "colored",
+        })
       }
     }
     fetchAddress();
@@ -49,7 +56,11 @@ function AddressFrom() {
   async function handleSaveAddress(e){
     e.preventDefault();
     if(!fromData.address || !fromData.addressType || !fromData.contact || !fromData.district || !fromData.landmark || !fromData.name || !fromData.pincode || !fromData.state || !fromData.streetName) {
-      alert("Please fill the all fields");     
+      toast.error("Please fill the all fields",{
+        position: "bottom-right" ,
+        autoClose: 3000,
+        theme: "colored"
+      });
       return;
     }
     console.log(fromData);
@@ -59,17 +70,31 @@ function AddressFrom() {
       setSavedAddress(fromData);
       setEditFrom(true);
       setBtnShow(false);
-      alert(res.data.msg);
+      // alert(res.data.msg);
+      toast.success(res.data.msg || "Your address added Successfully",{
+        position: "bottom-right" ,
+        autoClose: 3000,
+        theme: "colored"
+      });
     } catch (err) {
       console.log(err);
-      alert("Something went wrong");
+      // alert("Something went wrong");
+      toast.error(err?.response?.data?.error || "Something went wrong" ,{
+        position: "bottom-right" ,
+        theme: "colored",
+        autoClose: 3000
+      });
     }
   }
 
   async function handleUpdateAddress(e){
     e.preventDefault()
     if(!fromData.address || !fromData.addressType || !fromData.contact || !fromData.district || !fromData.landmark || !fromData.name || !fromData.pincode || !fromData.state || !fromData.streetName) {
-      alert("Please fill the all fields");     
+      toast.error("Please fill the all fields",{
+        position: "bottom-right" ,
+        autoClose: 3000,
+        theme: "colored"
+      });    
       return;
     }
     console.log(fromData);
@@ -79,10 +104,19 @@ function AddressFrom() {
       setSavedAddress(fromData);
       setEditFrom(true);
       setBtnShow(false);
-      alert(res.data.msg);
+      toast.success(res.data.msg,{
+        position: "bottom-right" ,
+        theme: "colored",
+        autoClose: 3000
+      });
     } catch (err) {
       console.log(err);
-      alert("Something went wrong");
+      toast.error(err?.response?.data?.error || "Something went wrong" ,{
+        position: "bottom-right" ,
+        theme: "colored",
+        autoClose: 3000
+      });
+      // alert("Something went wrong");
     }
   }
 
@@ -117,7 +151,7 @@ function AddressFrom() {
                 </div>
                 <div className='flex items-center gap-1 mb-7 px-1'>
                   <label htmlFor="address" className='text-lg font-medium font-sans capitalize  w-[20%] text-zinc-500 hover:cursor-pointer whitespace-nowrap'>Address :</label>
-                  <textarea name="address" id="address" className='border-zinc-300 w-full h-8 rounded border-2 px-2 outline-none' placeholder='Enter your Full Address...' onChange={ handleChange } value={fromData.address}></textarea>
+                  <textarea name="address" id="address" rows="5" cols={5} className='border-zinc-300 w-full h-8 rounded border-2 px-2 outline-none' placeholder='Enter your Full Address...' onChange={ handleChange } value={fromData.address}></textarea>
                 </div>
                 <div className='flex items-center gap-1 mb-7 px-1'>
                   <label htmlFor="streetName" className='text-lg font-medium font-sans capitalize  w-[20%] text-zinc-500 hover:cursor-pointer whitespace-nowrap'>streetName :</label>

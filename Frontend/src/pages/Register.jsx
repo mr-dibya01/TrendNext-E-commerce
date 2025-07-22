@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState  } from 'react'
 import assets from "../assets/productAssets/pictures.jsx"
-import { Link } from "react-router-dom"
+import { Link ,useNavigate } from "react-router-dom"
 import Navbar from '../components/Navbar.jsx';
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 function Register() {
   let [fromData,setFromData]=useState({ name: "" ,username: "" ,password: "",contact: "",email: ""});
+  const Navigate=useNavigate();
   function handleChange(e){
     setFromData((prev)=>
       ({...prev,[e.target.name]:e.target.value})
@@ -17,10 +19,27 @@ function Register() {
       console.log(fromData);
       let res=await axios.post("http://localhost:5000/trendnext/user/register",fromData);
       setFromData({ name: "" ,username: "" ,password: "",contact: "",email: ""});
-      alert(res.data.message);
-      console.log(res);
+      // alert(res.data.message);
+      toast.success(res.data.message || "Registered Successfully!", {
+      position: "bottom-right",
+      autoClose: 3000,
+      theme: "colored",
+      });
+      const nextRedirectUrl=localStorage.getItem("nextRedirectUrl");
+      if(nextRedirectUrl){
+        Navigate(nextRedirectUrl);
+        localStorage.removeItem("nextRedirectUrl");
+      } 
+      else {
+        Navigate("/trendnext/login");
+      }
     } catch (err) {
       console.log(err);
+      toast.error(err.response.data.error || "Something went wrong!", {
+      position: "bottom-right",
+      autoClose: 3000,
+      theme: "colored",
+      });
     }
   } 
   console.log(fromData);
@@ -29,7 +48,7 @@ function Register() {
     <Navbar />
       <div className='h-[90vh] w-full bg-zinc-200 flex justify-center items-center'>
         <div className="bg-white shadow-lg w-[80%] h-[95%] flex justify-between  rounded-xl px-10 py-12">
-          <div className='image-container w-[45%] h-full bg-red-400 rounded-[10%] overflow-hidden'> 
+          <div className='image-container w-[45%] h-full rounded-[10%] overflow-hidden'> 
             <img src={assets.Login_pic} className='h-full w-full object-cover' alt="" /> 
           </div>
 

@@ -1,10 +1,12 @@
 const jwt=require("jsonwebtoken");
+const expressEroor=require("../utils/expressEroor.js")
 
 function authMiddlware(req,res,next){
     const authHeader=req.headers.authorization;
     let checkEmpty=authHeader.split(" ")[1];
     if(!authHeader || checkEmpty == "" || checkEmpty === " " || checkEmpty === undefined || checkEmpty === "null" || checkEmpty === null){
-        res.status(401).json({error: "No Token"});
+        // res.status(401).json({error: "No Token"});
+        next(new expressEroor(402,"No Token"));
         return;
     }
     try {
@@ -14,7 +16,7 @@ function authMiddlware(req,res,next){
         req.user = decoded;
         next();
     } catch (err) {
-        res.status(401).json({ error: "Invalid token" });
+        next(new expressEroor(401 ,"Invalid token"))
     }
 }
 module.exports = authMiddlware;
