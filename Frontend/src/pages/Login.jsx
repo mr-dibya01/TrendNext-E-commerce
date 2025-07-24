@@ -3,6 +3,7 @@ import assets from "../assets/productAssets/pictures.jsx"
 import axios from "axios"
 import { Link ,useNavigate } from "react-router-dom"
 import Navbar from '../components/Navbar.jsx'
+import { toast } from 'react-toastify';
 
 function Login() {
   let [fromData,setFromData]=useState({username: "" , password: ""});
@@ -17,19 +18,35 @@ function Login() {
       let res=await axios.post("http://localhost:5000/trendnext/user/login",fromData);
       let token=res.data.token;
       localStorage.setItem("token",token);
+      // localStorage.clear();
       setFromData({username: "" , password: ""});
-      alert(res.data.message);  
+      // alert(res.data.message);   
       const nextRedirectUrl=localStorage.getItem("nextRedirectUrl");
       if(nextRedirectUrl){
         Navigate(nextRedirectUrl);
         localStorage.removeItem("nextRedirectUrl");
+        toast.success(res.data.message || "Successfully Loged In!", {
+          position: "bottom-right",
+          autoClose: 3000,
+          theme: "colored",
+        });
       } else {
         Navigate("/");
+        toast.success(res.data.message || "Successfully Loged In!", {
+          position: "bottom-right",
+          autoClose: 3000,
+          theme: "colored",
+        });
       }
       console.log(res);
     } catch (err) {
       console.log(err);
-      alert("Invalid username or password");
+      toast.error(err?.response?.data?.error || "Invalid username or password" ,{
+        position: "bottom-right" ,
+        autoClose: 3000 ,
+        theme: "colored"
+      });
+      // alert("Invalid username or password");
     }
   }
   // localStorage.clear();
@@ -38,7 +55,7 @@ function Login() {
       <Navbar />
       <div className='h-[90vh] w-full bg-zinc-200 flex justify-center items-center'>
         <div className="bg-white shadow-lg w-[80%] h-[95%] flex justify-between  rounded-xl px-10 py-12">
-          <div className='image-container w-[45%] h-full bg-red-400 rounded-[10%] overflow-hidden'>
+          <div className='image-container w-[45%] h-full rounded-[10%] overflow-hidden'>
             <img src={assets.Login_pic} className='h-full w-full object-cover object-[10% 60%]' alt="" />
           </div>
 

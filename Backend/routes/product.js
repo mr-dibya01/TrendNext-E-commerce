@@ -1,27 +1,20 @@
-const router=require("express").Router();
-const Product=require("../models/product.js")
+const router =require("express").Router();
+const wrapAsync =require("../utils/wrapAsync.js");
+const productController =require("../controller/product.js");
+const Product=require("../models/product.js");
 
-
+// console.log("---",productController.getAllProductsData); 
 // All Products
-router.get("/",async(req,res) => {
-    try {
-        let products=await Product.find();
-        res.json(products);
-    } catch(err) {
-        res.status(400).json({error: "Something went wrong!"});
-    }
-});
+router.get("/products",wrapAsync(productController.getAllProductsData));
+
+// Search query product
+router.get("/products/search",wrapAsync(productController.getSearchWiseProducts));
 
 // Individual product dettails
-router.get("/:id",async (req,res)=>{
-    let { id }=req.params;
-    try {
-        let product=await Product.findById(id);
-        res.json(product);
-    } catch(err) {
-        res.status(400).json({err: "Something went erong!"})
-    }
+router.get("/products/:id",wrapAsync(productController.showIndividualProduct));
 
-});
+// category wise product Data
+router.get("/products/category/:categoryName",wrapAsync (productController.getCatogorizeProductsData));
+
 
 module.exports=router;

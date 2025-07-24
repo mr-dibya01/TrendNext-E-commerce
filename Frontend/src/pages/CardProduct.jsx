@@ -1,16 +1,22 @@
 // src/components/CardProduct.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function CardProduct({ image, title, price, category, isBestseller, id, discount }) {
   const Navigate = useNavigate();
 
   function handleCard(id) {
-    Navigate(`/trendnext/${id}`);
+    console.log("handleCard");
+    Navigate(`/trendnext/products/${id}`);
   }
 
   function handleAddToCart(id) {
-    alert("Please select the size");
+    toast.error("Please select the size", {
+      position: "bottom-right",
+      autoClose: 3000,
+      theme: "colored",
+    });
   }
 
   return (

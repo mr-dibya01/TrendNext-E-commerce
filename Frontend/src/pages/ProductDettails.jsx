@@ -7,6 +7,7 @@ import { FaPlus ,FaMinus } from "react-icons/fa6";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../features/cart/cartSlice.js';
 import { setBuyNowItem } from "../features/cart/cartSlice.js"
+import { toast } from 'react-toastify';
 
 
 
@@ -23,10 +24,15 @@ function ProductDettails() {
   useEffect(() =>{
     async function fetchProduct(){
       try{
-        let res=await axios.get(`http://localhost:5000/trendnext/${id}`);
+        let res=await axios.get(`http://localhost:5000/trendnext/products/${id}`);
         setProductData(res.data);
       } catch (err) {
         console.log(err); 
+        toast.error(err?.response?.data?.error,{
+          theme: "colored",
+          position: "bottom-right",
+          autoClose: 3000
+        })
       }
     }
     fetchProduct();
@@ -39,7 +45,11 @@ function ProductDettails() {
 
   function handleAdd2Cart(){
     if(!selectSize){
-      alert("Plese select the size");
+      toast.error("Please select the size", {
+        position: "bottom-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
       return;
     }
     let productDettails={
@@ -52,19 +62,31 @@ function ProductDettails() {
     }
     Dispatch(addToCart(productDettails));
     console.log("Redux me gaya data: ", productDettails);
-    alert("Product added to cart!");
+    toast.success("Product added to cart!", {
+      position: "bottom-right",
+      autoClose: 3000,
+      theme: "colored",
+    });
   }
   function handleBuynow(){
     let token=localStorage.getItem("token");
     // localStorage.removeItem("token");
     if(!token) {
-      alert("you should be loged in to buy an item");
+      toast.error("you should be loged in to buy an item", {
+        position: "bottom-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
       localStorage.setItem("nextRedirectUrl",`/trendnext/${productData._id}`)
       Navigate("/trendnext/login");
       return;
     };
     if(!selectSize){
-      alert("Plese select the size");
+      toast.error("Plese select the size", {
+        position: "bottom-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
       return;
     }
     const buyNowData = [{

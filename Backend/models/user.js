@@ -18,7 +18,8 @@ const userSchema=new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     favorites: [{
         type: Schema.Types.ObjectId,
@@ -44,7 +45,11 @@ const userSchema=new Schema({
             landmark: String,
             addressType: String,
         }
-    ]
+    ],
+    isAdmin: {
+        type: Boolean,
+        default: false
+    }
 });
 
 module.exports = mongoose.model("User",userSchema);

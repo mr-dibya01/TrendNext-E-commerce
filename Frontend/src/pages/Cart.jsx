@@ -1,14 +1,11 @@
-import React from 'react'
-import { useSelector } from "react-redux" 
 import Navbar from '../components/Navbar';
 import { FaPlus ,FaMinus ,FaTag ,FaArrowRightLong } from "react-icons/fa6";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
-import { increaseItem } from "../features/cart/cartSlice.js"
-import { decreaseItem } from "../features/cart/cartSlice.js"
-import { useDispatch } from 'react-redux';
-import { removeToCart } from '../features/cart/cartSlice.js';
-import { setBuyNowItem } from '../features/cart/cartSlice.js';
+import { increaseItem ,decreaseItem ,removeToCart ,setBuyNowItem } from "../features/cart/cartSlice.js"
+import { useDispatch ,useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+
 
   
 function Cart() {
@@ -25,8 +22,14 @@ function Cart() {
     console.log(item);
   }
   function handleDeletion(item){
+    console.log(item);
     Dispatch(removeToCart(item));
     console.log("removeToCart",item);
+    toast.success("removed To Cart", {
+      position: "bottom-right",
+      autoClose: 3000,
+      theme: "colored",
+    });
   }
   function handleCheckout(){
     localStorage.setItem("buyNowData",JSON.stringify(cartItems));
@@ -59,7 +62,7 @@ function Cart() {
                     <h1 className='text-xl font-sans font-semibold'>${item.price}</h1>
                     <div className='quantity+Delete flex justify-between items-center'>
                       <div className='h-7 w-24 border border-black  flex items-center justify-around rounded-full'>
-                        <button onClick={()=>{handleDecreaseItem(item)}}><FaMinus className='hover:text-zinc-700 transition'/></button>
+                        <button onClick={()=>{handleDecreaseItem(item)}}> <FaMinus className='hover:text-zinc-700 transition'/> </button>
                         <h1>{item.quantity}</h1>
                         <button onClick={()=>{handleIncreaseItem(item)}}><FaPlus className='hover:text-zinc-700 transition'/></button>
                       </div>
