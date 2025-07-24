@@ -56,4 +56,5 @@ const productSchema=new Schema({
     }
 });
 
-module.exports=mongoose.model("Product",productSchema);
+ const product=mongoose.model("Product",productSchema);
+ module.exports=product;

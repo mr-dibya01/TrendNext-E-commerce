@@ -22,7 +22,7 @@ function Navbar({handleSearch}) {
   const cartSize = cartItems.length;
   const Navigate=useNavigate(); 
   let token=localStorage.getItem("token");
-
+  console.log(currUser);
   useEffect(()=>{
     async function fetchCurrUserInfo(){
       try{
@@ -52,7 +52,11 @@ function Navbar({handleSearch}) {
   
   }
   function handleAdmin(){
-    
+    toast.error("This feature is implement in feature!",{
+      position: "bottom-right" ,
+      autoClose: 3000 ,
+      theme: "colored" ,
+    });
   }
   function handleSidebar(){
     if(token){
@@ -104,7 +108,7 @@ function Navbar({handleSearch}) {
         </div>
         <span className='h-10 w-10 bg-white rounded-full flex justify-center items-center cursor-pointer hover:opacity-90'><FaUser onClick={ () => handleSidebar() } className='text-2xl' /></span>
         {navigateSidebar && 
-          <div className='absolute h-fit w-96 z-20 -right-2 top-5 rounded-xl pt-2 shadow-2xl  bg-zinc-200 overflow-hidden'>
+          <div className='absolute h-fit w-96 z-50 -right-2 top-5 rounded-xl pt-2 shadow-2xl  bg-zinc-200 overflow-hidden'>
             <div className='flex justify-end pr-2 pt-0.5 '>
               <RxCross1 className='size-7  hover:bg-red-600 hover:text-white text-red-600 p-1 rounded-full transition hover:cursor-pointer' onClick={() => setNavigateSidebar(!navigateSidebar)}/>
             </div> 
@@ -112,7 +116,8 @@ function Navbar({handleSearch}) {
               <span className='h-28 w-28 bg-black text-white p-6  rounded-full'>
                 <FaRegUser className='h-full w-full'/>
               </span>
-              <h1 className='text-2xl py-5'>{currUser.username}</h1>
+              <h1 className='text-2xl py-2 pt-3'>{currUser.username}</h1>
+              <h1 className='textlg pb-5'>{currUser.email}</h1>
             </div>
             
             <div className='flex justify-start items-center py-4 px-3 gap-2 border-b-2 border-zinc-300 border-t-2 hover:bg-zinc-300 transition cursor-pointer'>
