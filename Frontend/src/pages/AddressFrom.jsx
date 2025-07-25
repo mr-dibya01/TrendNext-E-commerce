@@ -19,7 +19,7 @@ function AddressFrom() {
   useEffect(() => {
     async function fetchAddress(){
       try {
-        let res= await axios.get("http://localhost:5000/trendnext/user/address",headers);
+        let res= await axios.get(`${import.meta.env.VITE_API_BASE_URL}/trendnext/user/address`,headers);
         console.log(res);
         console.log(res.data.address.length);
         if(res.data.address.length !== 0) {
@@ -65,7 +65,7 @@ function AddressFrom() {
     }
     console.log(fromData);
     try {
-      let res=await axios.post("http://localhost:5000/trendnext/user/address",fromData,headers);
+      let res=await axios.post(`${import.meta.env.VITE_API_BASE_URL}/trendnext/user/address`,fromData,headers);
       console.log(res);
       setSavedAddress(fromData);
       setEditFrom(true);
@@ -99,7 +99,7 @@ function AddressFrom() {
     }
     console.log(fromData);
     try {
-      let res=await axios.put("http://localhost:5000/trendnext/user/address",fromData,headers);
+      let res=await axios.put(`${import.meta.env.VITE_API_BASE_URL}/trendnext/user/address`,fromData,headers);
       console.log(res);
       setSavedAddress(fromData);
       setEditFrom(true);

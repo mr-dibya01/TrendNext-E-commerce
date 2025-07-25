@@ -11,7 +11,7 @@ function Home() {
   let [loading,setLoading]=useState(false);
   async function fetchData(){
     try {
-      let res = await axios.get("http://localhost:5000/trendnext/products");
+      let res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/trendnext/products`);
       setProductData(res.data);
       setLoading(false);
     } catch (err) {
@@ -26,7 +26,7 @@ function Home() {
       return fetchData();
     }
     try{
-      let result = await axios.get(`http://localhost:5000/trendnext/products/category/${cat}`);
+      let result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/trendnext/products/category/${cat}`);
       console.log(result);
       setProductData(result.data.categoryWiseProducts);
     } catch (err) {
@@ -42,7 +42,7 @@ function Home() {
   async function handleSearch(searchQuery){
     try {
       if(searchQuery.trim()){
-        let res=await axios.get(`http://localhost:5000/trendnext/products/search?query=${searchQuery}`);
+        let res=await axios.get(`${import.meta.env.VITE_API_BASE_URL}/trendnext/products/search?query=${searchQuery}`);
         setProductData(res.data);
       }
     } catch (err) {

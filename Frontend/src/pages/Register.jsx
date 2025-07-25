@@ -17,7 +17,7 @@ function Register() {
     e.preventDefault();
     try{
       console.log(fromData);
-      let res=await axios.post("http://localhost:5000/trendnext/user/register",fromData);
+      let res=await axios.post(`${import.meta.env.VITE_API_BASE_URL}/trendnext/user/register`,fromData);
       setFromData({ name: "" ,username: "" ,password: "",contact: "",email: ""});
       // alert(res.data.message);
       toast.success(res.data.message || "Registered Successfully!", {

@@ -24,7 +24,7 @@ function ProductDettails() {
   useEffect(() =>{
     async function fetchProduct(){
       try{
-        let res=await axios.get(`http://localhost:5000/trendnext/products/${id}`);
+        let res=await axios.get(`${import.meta.env.VITE_API_BASE_URL}/trendnext/products/${id}`);
         setProductData(res.data);
       } catch (err) {
         console.log(err); 

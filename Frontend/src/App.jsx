@@ -29,8 +29,6 @@ function App() {
           <Route path='/trendnext/login' element={<Login />} />
           <Route path='/trendnext/register' element={<Register />} />
           <Route path='/trendnext/OrderSuccess' element={< OrderSuccess/>}/>
-          <Route path='/trendnext/login' element={< Login/>}/>
-          <Route path='/trendnext/register' element={< Register/>}/>
           <Route path="*" element={<Login />} />
         </Routes>
         <ToastContainer

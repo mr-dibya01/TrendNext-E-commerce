@@ -15,7 +15,7 @@ function Login() {
     e.preventDefault();
     console.log(fromData);
     try {
-      let res=await axios.post("http://localhost:5000/trendnext/user/login",fromData);
+      let res=await axios.post(`${import.meta.env.VITE_API_BASE_URL}/trendnext/user/login`,fromData);
       let token=res.data.token;
       localStorage.setItem("token",token);
       // localStorage.clear();

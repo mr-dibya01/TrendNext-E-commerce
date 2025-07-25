@@ -26,7 +26,7 @@ function Navbar({handleSearch}) {
   useEffect(()=>{
     async function fetchCurrUserInfo(){
       try{
-        let res=await axios.get("http://localhost:5000/trendnext/user/userInfo",{
+        let res=await axios.get(`${import.meta.env.VITE_API_BASE_URL}/trendnext/user/userInfo`,{
           headers: {authorization:`Bearer ${token}`}
         });
         setCurrUser(res.data);
