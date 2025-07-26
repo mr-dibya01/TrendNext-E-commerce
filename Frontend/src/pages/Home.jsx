@@ -12,6 +12,7 @@ function Home() {
   async function fetchData(){
     try {
       let res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/trendnext/products`);
+      console.log(res);
       setProductData(res.data);
       setLoading(false);
     } catch (err) {
