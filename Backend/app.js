@@ -3,7 +3,7 @@ if(process.env.NODE_ENV != "production"){
 }
 
 const express=require("express");
-const mongoose=require("mongoose");
+const mongoose=require("mongoose"); 
 const app=express();
 const ProductRoute=require("./routes/product.js")
 const LoginRoute=require("./routes/user.js")
@@ -15,8 +15,8 @@ const productController=require("./controller/product.js")
 app.use(cors());
 app.use(express.urlencoded({extended: true})); 
 app.use(express.json());
-
-main().catch(err => console.log(err));
+console.log(process.env.ATLASDB_URI);
+main().catch(err => console.log(err)); 
 
 async function main() {
   let connectionDb=await mongoose.connect(process.env.ATLASDB_URI);
